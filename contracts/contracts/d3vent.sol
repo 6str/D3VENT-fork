@@ -25,8 +25,7 @@ contract d3vent {
     IWorldID internal immutable worldId;
 
     /// @dev The World ID group ID (always 1)
-    //uint256 internal immutable groupId = 1;
-    uint256 public groupId = 1;
+    uint256 internal immutable groupId = 1;
 
     /// @dev worldcoin action id used in verifyAndExecute
     string public actionId = "wid_a4c0eed4ad6a1f24aadbcdd4fcb0ccf7";
