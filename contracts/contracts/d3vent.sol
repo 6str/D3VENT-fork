@@ -6,7 +6,6 @@ import {IWorldID} from "./interfaces/IWorldID.sol";
 
 contract d3vent {
     event CreatedEvent(uint indexed eventId, uint indexed eventDate, string indexed eventName);
-    event Withdrawal(uint indexed eventId, address indexed organiser, uint balance);
     event JoinableSet(uint indexed eventId, bool isJoinable);
     event NewOrganiser(uint indexed eventId, address newOrganiser);
     event AdminAdded(address indexed newAdmin, address indexed addedBy);
@@ -37,7 +36,6 @@ contract d3vent {
 
     
     uint public eventIds;
-    uint public immutable withdrawalBuffer;
     uint public adminsCount;
     
 
@@ -54,7 +52,6 @@ contract d3vent {
         //uint128 capacity;
         uint128 numJoined;      
         bool isJoinable;
-        uint withdrawalDate;
         uint sfIndexId;
     }
 
@@ -68,12 +65,11 @@ contract d3vent {
     mapping(uint => uint) public eventBalances;    // eventId => event balance
     mapping(address => bool) public isAdmin;   // admin address to bool
 
-    constructor (uint _withdrawalBuffer, IWorldID _worldId) {
+    constructor (IWorldID _worldId) {
         require(_worldId != IWorldID(address(0)), "zero address is invalid");
         isAdmin[msg.sender] = true;
         adminsCount = 1;
         worldId = _worldId;
-        withdrawalBuffer = _withdrawalBuffer;
     }
 
 
@@ -270,16 +266,5 @@ contract d3vent {
 
         isVerified[_userAddr] = _verified;
         if(_verified) emit UserVerified(_userAddr);
-    }
-
-    /// @dev event organiser can withdraw event balance
-    function organiserWithdrawal(uint _id) external onlyOrganiser(_id) {
-        require(block.timestamp >= events[_id].withdrawalDate + withdrawalBuffer, "withdrawal not allowed yet");
-        
-        uint _balance = eventBalances[_id];
-        eventBalances[_id] = 0;
-        (bool success, ) = msg.sender.call{value: _balance}("");
-        require(success, "withdrawal failed");
-        emit Withdrawal(_id, msg.sender, _balance);
     }
 }
