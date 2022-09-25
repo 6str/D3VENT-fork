@@ -6,9 +6,10 @@ require("dotenv").config();
 const phill =  process.env.phill
 const itachi = process.env.itachi
 //const try =
-//const bhakti =  
+const bhakti = process.env.bhakti
 
 module.exports = [
     phill,
     itachi,
+    bhakti,
 ];

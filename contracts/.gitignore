@@ -1,6 +1,11 @@
 ## DO NOT DELETE THIS FILE!!!
 ## SERIOUSLY, DON'T TOUCH IT!
 
+#project musings
+d3vent.sol.no
+d3vent.sol.testing
+*.ignore
+
 .env
 node_modules
 coverage

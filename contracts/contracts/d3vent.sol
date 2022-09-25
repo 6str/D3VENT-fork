@@ -10,10 +10,10 @@ contract d3vent {
     event NewOrganiser(uint indexed eventId, address newOrganiser);
     event AdminAdded(address indexed newAdmin, address indexed addedBy);
     event AdminDeleted(address indexed deletedAdmin, address indexed deletedBy);
-
     event UserVerified(address indexed user);
     event EventPlaybackUriUpdated(uint indexed eventId, string playbackUri);
     event EventSuperfluidIndexIdUpdated(uint indexed eventId, uint sfIndexId);
+    event EventJoined(uint eventId, address joiner);
 
     using ByteHasher for bytes;
 
@@ -29,8 +29,6 @@ contract d3vent {
     /// @dev worldcoin action id used in verifyAndExecute
     string public actionId = "wid_a4c0eed4ad6a1f24aadbcdd4fcb0ccf7";
 
-    
-    
     /// @dev Whether a nullifier hash has been used already. Used to guarantee an action is only performed once by a single person
     mapping(uint256 => bool) internal nullifierHashes;
 
@@ -48,8 +46,6 @@ contract d3vent {
         string playbackUri;
         uint dateTime;
         uint duration;
-        //uint price;
-        //uint128 capacity;
         uint128 numJoined;      
         bool isJoinable;
         uint sfIndexId;
@@ -104,6 +100,15 @@ contract d3vent {
 
         // Finally, execute your logic here, for example issue a token, NFT, etc...
         // Make sure to emit some kind of event afterwards!
+        isVerified[signal] = true;
+        emit UserVerified(signal);
+    }
+
+
+    /// @dev added for demo purposes to workaround worldcoin service outage
+    function verifyAndExecuteDemo(
+        address signal
+    ) public {
         isVerified[signal] = true;
         emit UserVerified(signal);
     }
@@ -172,7 +177,6 @@ contract d3vent {
         newEvent.name = _name;
         newEvent.description = _description;
         newEvent.uri = _uri;
-
         newEvent.playbackUri = _playbackUri;
         newEvent.dateTime = _dateTime;
         newEvent.duration = _duration;
@@ -184,6 +188,7 @@ contract d3vent {
         events.push(newEvent);
         emit CreatedEvent(newEvent.id, newEvent.dateTime, newEvent.name);
     }
+
 
     /// @dev allow an event's organiser to be changed
     function setOrganiser(uint _id, address _newOrganiser) external onlyOrganiser(_id) {
@@ -211,6 +216,7 @@ contract d3vent {
         isJoined[_id][msg.sender] = true;
         userEventIds[msg.sender].push(_id);
         //eventBalances[_id] = msg.value;   // ticket price no longer in use as using superfluid
+        emit EventJoined(_id, msg.sender);
     }
     
 
@@ -263,7 +269,6 @@ contract d3vent {
 
     /// @dev allow a contract admin to set isVerified true for an address
     function setIsVerified(address _userAddr, bool _verified) external onlyAdmins {
-
         isVerified[_userAddr] = _verified;
         if(_verified) emit UserVerified(_userAddr);
     }

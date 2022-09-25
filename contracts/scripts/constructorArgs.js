@@ -5,10 +5,6 @@ require("dotenv").config();
 
 const worldcoin_addr = process.env.WORLDID_ADDR_STAGING
 
-const days = 60 * 60 * 24 * 1000
-const withdrawBuffer = 3 * days
-
 module.exports = [
-    withdrawBuffer,
     worldcoin_addr,
 ];

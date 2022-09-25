@@ -12,25 +12,21 @@ let networkName, networkId, srs
 let d3ventContract
 
 assignSigners = async () => srs = await hre.ethers.getSigners()
-  assignSigners()
+assignSigners()
 
 
 const main = async () => {
   console.log("contructor args:", constructorArgs)
 
   try{
-    const d3ventContractFactory = await hre.ethers.getContractFactory('d3vent');
-    d3ventContract = await d3ventContractFactory.deploy(...constructorArgs);
+    const d3ventContractFactory = await hre.ethers.getContractFactory('d3vent')
+    d3ventContract = await d3ventContractFactory.deploy(...constructorArgs)
     await d3ventContract.deployed();
-    console.log("Contract deployed to: ", d3ventContract.address);
-    console.log(MUMBAI_SCAN_STUB + d3ventContract.address);
-    console.log(POLYGON_SCAN_STUB + d3ventContract.address);
+    console.log("Contract deployed to: ", d3ventContract.address)
   } catch (error) {
     console.log(error)
     return
   }
-
-  console.log("verify command: ", VERIFY_COMMAND.replace("<REPLACE WITH CONTRACT ADDRESS>", d3ventContract.address))
 
   const contractNetwork = await d3ventContract.provider.getNetwork()
   networkId = contractNetwork.chainId.toString()
@@ -40,7 +36,7 @@ const main = async () => {
 
   //create events
   try {
-    console.log("create events")
+    console.log("test data: create events")
 
     // event name, event description, sfIndexId, event uri, playbackUri, dateTime, duration, isJoinable
     await d3ventContract.createEvent("inaugural event", "something for everyone", 11110, "https://drive.google.com/uc?export=view&id=1O2PruQVDFw3O8HZOqbZfgZaZdt67Lzpj", "https://livepeer.org/123", 1662994265000, 1800000, true)
@@ -58,7 +54,7 @@ const main = async () => {
 
   // join events
   try {
-    console.log("join events")
+    console.log("test data: join events")
     await d3ventContract.joinEvent(0)
     await d3ventContract.joinEvent(1)
     await d3ventContract.joinEvent(2)
@@ -69,12 +65,20 @@ const main = async () => {
 
   // set sfIndexIds
   try {
-    console.log("set/get events' sfIndexIds")
+    console.log("test data: set/get events' sfIndexIds")
     await d3ventContract.setSfIndexId(0, 101010)
     await d3ventContract.setSfIndexId(1, 12345)
     await d3ventContract.setSfIndexId(2, 67890)
   } catch (error) {
     console.log("set sfIndexId: ", error)
+  }
+
+
+  try {
+    console.log("test verifyAndExecuteDemo")
+    await d3ventContract.verifyAndExecuteDemo(srs[0].address)
+  } catch (error) {
+    console.log("verifyAndExecutDemo error: ", error)
   }
 
 
@@ -94,6 +98,10 @@ const main = async () => {
 
   // if not Hardhat i.e. local do some pipeline actions
   if(networkId != "31337") {
+
+  console.log(MUMBAI_SCAN_STUB + d3ventContract.address)
+  console.log(POLYGON_SCAN_STUB + d3ventContract.address)
+  console.log("verify command: ", VERIFY_COMMAND.replace("<REPLACE WITH CONTRACT ADDRESS>", d3ventContract.address))
 
     // output contract address to current address quick reference file and log file
     console.log("writing contract address reference files")
