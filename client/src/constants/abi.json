@@ -2,11 +2,6 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "_withdrawalBuffer",
-        "type": "uint256"
-      },
-      {
         "internalType": "contract IWorldID",
         "name": "_worldId",
         "type": "address"
@@ -81,6 +76,25 @@
       }
     ],
     "name": "CreatedEvent",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "eventId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "joiner",
+        "type": "address"
+      }
+    ],
+    "name": "EventJoined",
     "type": "event"
   },
   {
@@ -170,31 +184,6 @@
       }
     ],
     "name": "UserVerified",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "eventId",
-        "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "organiser",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "balance",
-        "type": "uint256"
-      }
-    ],
-    "name": "Withdrawal",
     "type": "event"
   },
   {
@@ -387,11 +376,6 @@
           },
           {
             "internalType": "uint256",
-            "name": "withdrawalDate",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
             "name": "sfIndexId",
             "type": "uint256"
           }
@@ -468,11 +452,6 @@
           },
           {
             "internalType": "uint256",
-            "name": "withdrawalDate",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
             "name": "sfIndexId",
             "type": "uint256"
           }
@@ -537,19 +516,6 @@
         "internalType": "uint256[]",
         "name": "",
         "type": "uint256[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "groupId",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -702,19 +668,6 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_id",
-        "type": "uint256"
-      }
-    ],
-    "name": "organiserWithdrawal",
-    "outputs": [],
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -873,16 +826,16 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "withdrawalBuffer",
-    "outputs": [
+    "inputs": [
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
+        "internalType": "address",
+        "name": "signal",
+        "type": "address"
       }
     ],
-    "stateMutability": "view",
+    "name": "verifyAndExecuteDemo",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   }
 ]

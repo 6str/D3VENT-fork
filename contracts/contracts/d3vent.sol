@@ -59,7 +59,7 @@ contract d3vent {
     mapping(uint => mapping(address => uint)) public joinerBalances;   // eventId => user address => balance
     mapping(address => uint[]) public organiserEventIds; // organiser address => event ids
     mapping(uint => uint) public eventBalances;    // eventId => event balance
-    mapping(address => bool) public isAdmin;   // admin address to bool
+    mapping(address => bool) public isAdmin;   // admin address => bool
 
     constructor (IWorldID _worldId) {
         require(_worldId != IWorldID(address(0)), "zero address is invalid");
