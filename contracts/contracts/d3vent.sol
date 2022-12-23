@@ -137,10 +137,11 @@ contract d3vent {
 
 
     /// @dev delete a contract administrator. there must be at least one admin
-    function deleteAdmin(address _newAdmin) external onlyAdmins {
+    function deleteAdmin(address _admin) external onlyAdmins {
         require(adminsCount > 1, "can't delete last admin");
         --adminsCount;
-        isAdmin[_newAdmin] = false;
+        isAdmin[_admin] = false;
+        emit AdminDeleted(_admin, msg.sender);
     }
 
     
